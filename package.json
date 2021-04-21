@@ -1,6 +1,6 @@
 {
   "name": "@clebert/node-d-bus",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A Node.js implementation of D-Bus with native TypeScript support.",
   "bugs": {
     "url": "https://github.com/clebert/node-d-bus/issues"
