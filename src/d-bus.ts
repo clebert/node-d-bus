@@ -11,8 +11,6 @@ export abstract class DBus {
 
   async callMethod(message: MethodCallMessage): Promise<MethodReturnMessage> {
     return new Promise<MethodReturnMessage>((resolve, reject) => {
-      this.send(message);
-
       let offError: (() => void) | undefined;
       let offMessage: (() => void) | undefined;
 
@@ -37,6 +35,8 @@ export abstract class DBus {
           }
         }
       });
+
+      this.send(message);
     });
   }
 

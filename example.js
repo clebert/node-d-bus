@@ -11,9 +11,9 @@ const {SystemDBus} = require('./lib/cjs');
   try {
     const helloReturnMessage = await dBus.callMethod({
       messageType: MessageType.MethodCall,
-      path: '/org/freedesktop/DBus',
-      interface: 'org.freedesktop.DBus',
-      member: 'Hello',
+      objectPath: '/org/freedesktop/DBus',
+      interfaceName: 'org.freedesktop.DBus',
+      memberName: 'Hello',
       serial: 1,
       destination: 'org.freedesktop.DBus',
     });
