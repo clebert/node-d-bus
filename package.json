@@ -32,15 +32,15 @@
   },
   "devDependencies": {
     "@types/node": "^14.14.41",
-    "d-bus-message-protocol": "^0.1.0",
-    "d-bus-type-system": "^0.12.2",
+    "d-bus-message-protocol": "^0.2.0",
+    "d-bus-type-system": "^0.13.0",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.2.1",
     "tslint": "^6.1.3",
     "typescript": "^4.2.4"
   },
   "peerDependencies": {
-    "d-bus-message-protocol": "^0.1.0",
-    "d-bus-type-system": "^0.12.2"
+    "d-bus-message-protocol": "^0.2.0",
+    "d-bus-type-system": "^0.13.0"
   }
 }
