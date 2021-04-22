@@ -29,9 +29,17 @@ export abstract class DBus {
           }
         } else if (otherMessage.messageType === MessageType.Error) {
           if (otherMessage.replySerial === message.serial) {
+            const errorMessage = otherMessage.args?.[0];
+
             offError?.();
             offMessage?.();
-            reject(new Error(String(otherMessage.body)));
+            reject(
+              new Error(
+                typeof errorMessage === 'string'
+                  ? errorMessage
+                  : 'Unknown error.'
+              )
+            );
           }
         }
       });
