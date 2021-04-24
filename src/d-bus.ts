@@ -64,13 +64,21 @@ export abstract class DBus {
 
   protected emitError(error: Error): void {
     for (const listener of this.#errorListeners) {
-      listener(error);
+      try {
+        listener(error);
+      } catch (error) {
+        console.error('Failed to notify error listener.', error);
+      }
     }
   }
 
   protected emitMessage(message: Message): void {
     for (const listener of this.#messageListeners) {
-      listener(message);
+      try {
+        listener(message);
+      } catch (error) {
+        console.error('Failed to notify message listener.', error);
+      }
     }
   }
 }
