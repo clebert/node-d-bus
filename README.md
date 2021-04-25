@@ -52,7 +52,7 @@ import {SystemDBus} from '@clebert/node-d-bus';
       objectPath: '/org/freedesktop/DBus',
       interfaceName: 'org.freedesktop.DBus',
       memberName: 'Hello',
-      serial: 1,
+      serial: dBus.nextSerial,
       destination: 'org.freedesktop.DBus',
     });
 
@@ -77,6 +77,9 @@ import {SystemDBus} from '@clebert/node-d-bus';
   "body": ":1.811"
 }
 ```
+
+Note: The preceding message can also be conveniently sent using the
+`await dBus.hello()` method.
 
 ---
 

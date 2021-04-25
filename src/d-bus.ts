@@ -4,10 +4,17 @@ import {
   MethodCallMessage,
   MethodReturnMessage,
 } from 'd-bus-message-protocol';
+import {assertType, stringType, structType} from 'd-bus-type-system';
 
 export abstract class DBus {
   readonly #errorListeners = new Set<(error: Error) => void>();
   readonly #messageListeners = new Set<(message: Message) => void>();
+
+  #serial = 0;
+
+  get nextSerial(): number {
+    return ++this.#serial;
+  }
 
   async callMethod(message: MethodCallMessage): Promise<MethodReturnMessage> {
     return new Promise<MethodReturnMessage>((resolve, reject) => {
@@ -46,6 +53,21 @@ export abstract class DBus {
 
       this.send(message);
     });
+  }
+
+  async hello(): Promise<string> {
+    const {args} = await await this.callMethod({
+      messageType: MessageType.MethodCall,
+      objectPath: '/org/freedesktop/DBus',
+      interfaceName: 'org.freedesktop.DBus',
+      memberName: 'Hello',
+      serial: this.nextSerial,
+      destination: 'org.freedesktop.DBus',
+    });
+
+    assertType(structType(stringType), args);
+
+    return args[0];
   }
 
   onError(listener: (error: Error) => void): () => void {

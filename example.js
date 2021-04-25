@@ -14,7 +14,7 @@ const {SystemDBus} = require('./lib/cjs');
       objectPath: '/org/freedesktop/DBus',
       interfaceName: 'org.freedesktop.DBus',
       memberName: 'Hello',
-      serial: 1,
+      serial: dBus.nextSerial,
       destination: 'org.freedesktop.DBus',
     });
 
