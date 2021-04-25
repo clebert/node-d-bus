@@ -9,4 +9,8 @@ if (typeof global.TextEncoder === 'undefined') {
 }
 
 export * from './d-bus';
+export * from './interface-element';
+export * from './member-element';
+export * from './object-element';
+export * from './proxy-object';
 export * from './system-d-bus';
