@@ -40,13 +40,7 @@ export abstract class DBus {
 
             offError?.();
             offMessage?.();
-            reject(
-              new Error(
-                typeof errorMessage === 'string'
-                  ? errorMessage
-                  : 'Unknown error.'
-              )
-            );
+            reject(new Error(`${otherMessage.errorName}: ${errorMessage}`));
           }
         }
       });
