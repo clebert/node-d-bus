@@ -32,7 +32,7 @@ export class ProxyObject {
         args: [this.interfaceName, memberName],
       });
     } catch (error) {
-      if (error.message === `No such property '${memberName}'`) {
+      if (error.message.includes(`No such property '${memberName}'`)) {
         return undefined;
       }
 
