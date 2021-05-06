@@ -1,6 +1,7 @@
-import {Message, parseMessages, serializeMessage} from 'd-bus-message-protocol';
+import {Message, serializeMessage} from 'd-bus-message-protocol';
 import {Socket, createConnection} from 'net';
 import {DBus} from './d-bus';
+import {MessageParser} from './message-parser';
 
 export class SystemDBus extends DBus {
   #state:
@@ -54,6 +55,8 @@ export class SystemDBus extends DBus {
         }
       });
 
+      const messageParser = new MessageParser();
+
       socket.on('data', (data) => {
         if (this.#state[0] === 'connecting') {
           if (data.toString().startsWith('OK')) {
@@ -71,9 +74,7 @@ export class SystemDBus extends DBus {
           this.#state[0] === 'connected' &&
           this.#state[1] === socket
         ) {
-          const messages = parseMessages(data);
-
-          for (const message of messages) {
+          for (const message of messageParser.parseMessages(data) ?? []) {
             this.emitMessage(message);
           }
         }
