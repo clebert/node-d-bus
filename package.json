@@ -1,6 +1,6 @@
 {
   "name": "@clebert/node-d-bus",
-  "version": "0.7.3",
+  "version": "1.0.0",
   "description": "A Node.js implementation of D-Bus with native TypeScript support.",
   "repository": {
     "type": "git",
