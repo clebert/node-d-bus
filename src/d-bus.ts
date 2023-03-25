@@ -1,9 +1,9 @@
-import {
+import type {
   Message,
-  MessageType,
   MethodCallMessage,
   MethodReturnMessage,
 } from 'd-bus-message-protocol';
+import {MessageType} from 'd-bus-message-protocol';
 import {assertType, stringType, structType} from 'd-bus-type-system';
 
 export abstract class DBus {
@@ -18,16 +18,13 @@ export abstract class DBus {
 
   async callMethod(message: MethodCallMessage): Promise<MethodReturnMessage> {
     return new Promise<MethodReturnMessage>((resolve, reject) => {
-      let offError: (() => void) | undefined;
-      let offMessage: (() => void) | undefined;
-
-      offError = this.onError((error) => {
+      const offError = this.onError((error) => {
         offError?.();
         offMessage?.();
         reject(error);
       });
 
-      offMessage = this.onMessage((otherMessage) => {
+      const offMessage = this.onMessage((otherMessage) => {
         if (otherMessage.messageType === MessageType.MethodReturn) {
           if (otherMessage.replySerial === message.serial) {
             offError?.();
@@ -50,13 +47,13 @@ export abstract class DBus {
   }
 
   async hello(): Promise<string> {
-    const {args} = await await this.callMethod({
+    const {args} = await this.callMethod({
       messageType: MessageType.MethodCall,
-      objectPath: '/org/freedesktop/DBus',
-      interfaceName: 'org.freedesktop.DBus',
-      memberName: 'Hello',
+      objectPath: `/org/freedesktop/DBus`,
+      interfaceName: `org.freedesktop.DBus`,
+      memberName: `Hello`,
       serial: this.nextSerial,
-      destination: 'org.freedesktop.DBus',
+      destination: `org.freedesktop.DBus`,
     });
 
     assertType(structType(stringType), args);
@@ -82,8 +79,8 @@ export abstract class DBus {
     for (const listener of this.#errorListeners) {
       try {
         listener(error);
-      } catch (error) {
-        console.error('Failed to notify error listener.', error);
+      } catch {
+        console.error(`Failed to notify error listener.`);
       }
     }
   }
@@ -92,8 +89,8 @@ export abstract class DBus {
     for (const listener of this.#messageListeners) {
       try {
         listener(message);
-      } catch (error) {
-        console.error('Failed to notify message listener.', error);
+      } catch {
+        console.error(`Failed to notify message listener.`);
       }
     }
   }

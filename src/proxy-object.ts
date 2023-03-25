@@ -1,20 +1,21 @@
-import {MessageType, MethodReturnMessage} from 'd-bus-message-protocol';
+import type {MethodReturnMessage} from 'd-bus-message-protocol';
+import {MessageType} from 'd-bus-message-protocol';
+import type {CompleteType} from 'd-bus-type-system';
 import {
-  CompleteType,
   assertType,
   stringType,
   structType,
   variantType,
 } from 'd-bus-type-system';
-import {DBus} from './d-bus';
-import {ObjectElement} from './object-element';
+import type {DBus} from './d-bus.js';
+import {ObjectElement} from './object-element.js';
 
 export class ProxyObject {
   constructor(
     readonly dBus: DBus,
     readonly serviceName: string,
     readonly objectPath: string,
-    readonly interfaceName: string
+    readonly interfaceName: string,
   ) {}
 
   async getProperty(memberName: string): Promise<unknown> {
@@ -24,15 +25,18 @@ export class ProxyObject {
       message = await this.dBus.callMethod({
         messageType: MessageType.MethodCall,
         objectPath: this.objectPath,
-        interfaceName: 'org.freedesktop.DBus.Properties',
-        memberName: 'Get',
+        interfaceName: `org.freedesktop.DBus.Properties`,
+        memberName: `Get`,
         serial: this.dBus.nextSerial,
         destination: this.serviceName,
         types: [stringType, stringType],
         args: [this.interfaceName, memberName],
       });
     } catch (error) {
-      if (error.message.includes(`No such property '${memberName}'`)) {
+      if (
+        error instanceof Error &&
+        error.message.includes(`No such property '${memberName}'`)
+      ) {
         return undefined;
       }
 
@@ -47,13 +51,13 @@ export class ProxyObject {
   async setProperty(
     memberName: string,
     memberType: CompleteType,
-    memberValue: unknown
+    memberValue: unknown,
   ): Promise<void> {
     await this.dBus.callMethod({
       messageType: MessageType.MethodCall,
       objectPath: this.objectPath,
-      interfaceName: 'org.freedesktop.DBus.Properties',
-      memberName: 'Set',
+      interfaceName: `org.freedesktop.DBus.Properties`,
+      memberName: `Set`,
       serial: this.dBus.nextSerial,
       destination: this.serviceName,
       types: [stringType, stringType, variantType],
@@ -66,13 +70,13 @@ export class ProxyObject {
   async callMethod(
     memberName: string,
     types: readonly [CompleteType, ...CompleteType[]],
-    args: readonly [unknown, ...unknown[]]
+    args: readonly [unknown, ...unknown[]],
   ): Promise<MethodReturnMessage>;
 
   async callMethod(
     memberName: string,
     types?: readonly [CompleteType, ...CompleteType[]],
-    args?: readonly [unknown, ...unknown[]]
+    args?: readonly [unknown, ...unknown[]],
   ): Promise<MethodReturnMessage> {
     return this.dBus.callMethod({
       messageType: MessageType.MethodCall,

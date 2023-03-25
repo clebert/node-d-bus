@@ -1,26 +1,27 @@
 import {MessageType} from 'd-bus-message-protocol';
 import {arrayType, assertType, stringType, structType} from 'd-bus-type-system';
-import {DBus} from './d-bus';
-import {InterfaceElement, InterfaceStructure} from './interface-element';
-import {MemberElement} from './member-element';
+import type {DBus} from './d-bus.js';
+import type {InterfaceStructure} from './interface-element.js';
+import {InterfaceElement} from './interface-element.js';
+import type {MemberElement} from './member-element.js';
 
 export type ObjectStructure = readonly [string, readonly InterfaceStructure[]];
 
 export class ObjectElement {
   static readonly structureType = structType(
     stringType,
-    arrayType(InterfaceElement.structureType)
+    arrayType(InterfaceElement.structureType),
   );
 
   static async getAll(
     dBus: DBus,
-    serviceName: string
+    serviceName: string,
   ): Promise<readonly ObjectElement[]> {
     const {args} = await dBus.callMethod({
       messageType: MessageType.MethodCall,
-      objectPath: '/',
-      interfaceName: 'org.freedesktop.DBus.ObjectManager',
-      memberName: 'GetManagedObjects',
+      objectPath: `/`,
+      interfaceName: `org.freedesktop.DBus.ObjectManager`,
+      memberName: `GetManagedObjects`,
       serial: dBus.nextSerial,
       destination: serviceName,
     });
@@ -34,21 +35,21 @@ export class ObjectElement {
     return new ObjectElement(
       structure[0],
       structure[1].map((interfaceStructure) =>
-        InterfaceElement.from(interfaceStructure)
-      )
+        InterfaceElement.from(interfaceStructure),
+      ),
     );
   }
 
   constructor(
     readonly objectPath: string,
-    readonly interfaceElements: readonly InterfaceElement[]
+    readonly interfaceElements: readonly InterfaceElement[],
   ) {}
 
   hasInterface(interfaceName: string, memberElement?: MemberElement): boolean {
     return this.interfaceElements.some(
       (interfaceElement) =>
         interfaceElement.interfaceName === interfaceName &&
-        (!memberElement || interfaceElement.hasMember(memberElement))
+        (!memberElement || interfaceElement.hasMember(memberElement)),
     );
   }
 }

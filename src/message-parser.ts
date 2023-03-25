@@ -1,8 +1,5 @@
-import {Message, parseMessages} from 'd-bus-message-protocol';
-import {TextDecoder, TextEncoder} from 'util';
-
-global.TextDecoder = TextDecoder as any;
-global.TextEncoder = TextEncoder;
+import type {Message} from 'd-bus-message-protocol';
+import {parseMessages} from 'd-bus-message-protocol';
 
 export class MessageParser {
   #data: readonly Buffer[] = [];
@@ -15,7 +12,7 @@ export class MessageParser {
 
       return messages;
     } catch (error) {
-      if (error.message.includes('bounds')) {
+      if (error instanceof Error && error.message.includes(`bounds`)) {
         this.#data = [...this.#data, data];
 
         return undefined;

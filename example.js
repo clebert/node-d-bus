@@ -1,25 +1,21 @@
-// @ts-check
+import {MessageType} from 'd-bus-message-protocol';
+import {SystemDBus} from './lib/index.js';
 
-const {MessageType} = require('d-bus-message-protocol');
-const {SystemDBus} = require('./lib/cjs');
+const dBus = new SystemDBus();
 
-(async () => {
-  const dBus = new SystemDBus();
+await dBus.connectAsExternal();
 
-  await dBus.connectAsExternal();
+try {
+  const helloReturnMessage = await dBus.callMethod({
+    messageType: MessageType.MethodCall,
+    objectPath: `/org/freedesktop/DBus`,
+    interfaceName: `org.freedesktop.DBus`,
+    memberName: `Hello`,
+    serial: dBus.nextSerial,
+    destination: `org.freedesktop.DBus`,
+  });
 
-  try {
-    const helloReturnMessage = await dBus.callMethod({
-      messageType: MessageType.MethodCall,
-      objectPath: '/org/freedesktop/DBus',
-      interfaceName: 'org.freedesktop.DBus',
-      memberName: 'Hello',
-      serial: dBus.nextSerial,
-      destination: 'org.freedesktop.DBus',
-    });
-
-    console.log(JSON.stringify(helloReturnMessage));
-  } finally {
-    dBus.disconnect();
-  }
-})().catch(console.error.bind(console));
+  console.log(JSON.stringify(helloReturnMessage));
+} finally {
+  dBus.disconnect();
+}
