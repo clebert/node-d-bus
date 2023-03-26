@@ -19,7 +19,6 @@ npm install @clebert/node-d-bus d-bus-message-protocol d-bus-type-system
   - The default path (`unix:path=/var/run/dbus/system_bus_socket`) can be
     overwritten with the environment variable `DBUS_SYSTEM_BUS_ADDRESS`.
 - Built-in support for authentication as external.
-- Tested with Node.js 14 on Raspberry Pi OS Lite.
 
 ## Usage example
 
