@@ -1,9 +1,10 @@
-import {MessageType} from 'd-bus-message-protocol';
-import {arrayType, assertType, stringType, structType} from 'd-bus-type-system';
 import type {DBus} from './d-bus.js';
 import type {InterfaceStructure} from './interface-element.js';
-import {InterfaceElement} from './interface-element.js';
 import type {MemberElement} from './member-element.js';
+
+import {InterfaceElement} from './interface-element.js';
+import {MessageType} from 'd-bus-message-protocol';
+import {arrayType, assertType, stringType, structType} from 'd-bus-type-system';
 
 export type ObjectStructure = readonly [string, readonly InterfaceStructure[]];
 

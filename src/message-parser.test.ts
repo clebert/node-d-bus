@@ -1,5 +1,5 @@
-import {describe, expect, test} from '@jest/globals';
 import {MessageParser} from './message-parser.js';
+import {describe, expect, test} from '@jest/globals';
 
 function toBuffer(...bytes: string[]): Buffer {
   const array: number[] = [];

@@ -1,6 +1,7 @@
-import {arrayType, stringType, structType} from 'd-bus-type-system';
 import type {MemberStructure} from './member-element.js';
+
 import {MemberElement} from './member-element.js';
+import {arrayType, stringType, structType} from 'd-bus-type-system';
 
 export type InterfaceStructure = readonly [string, readonly MemberStructure[]];
 

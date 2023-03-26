@@ -1,4 +1,5 @@
 import type {VariantValue} from 'd-bus-type-system';
+
 import {stringType, structType, variantType} from 'd-bus-type-system';
 
 export type MemberStructure = readonly [string, VariantValue];

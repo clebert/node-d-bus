@@ -1,10 +1,11 @@
-import type {Socket} from 'node:net';
-import {createConnection} from 'node:net';
-import {getuid} from 'node:process';
 import type {Message} from 'd-bus-message-protocol';
-import {serializeMessage} from 'd-bus-message-protocol';
+import type {Socket} from 'node:net';
+
 import {DBus} from './d-bus.js';
 import {MessageParser} from './message-parser.js';
+import {serializeMessage} from 'd-bus-message-protocol';
+import {createConnection} from 'node:net';
+import {getuid} from 'node:process';
 
 export class SystemDBus extends DBus {
   #state:

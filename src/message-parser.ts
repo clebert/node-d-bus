@@ -1,4 +1,5 @@
 import type {Message} from 'd-bus-message-protocol';
+
 import {parseMessages} from 'd-bus-message-protocol';
 
 export class MessageParser {

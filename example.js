@@ -1,5 +1,5 @@
-import {MessageType} from 'd-bus-message-protocol';
 import {SystemDBus} from './lib/index.js';
+import {MessageType} from 'd-bus-message-protocol';
 
 const dBus = new SystemDBus();
 

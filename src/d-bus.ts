@@ -3,6 +3,7 @@ import type {
   MethodCallMessage,
   MethodReturnMessage,
 } from 'd-bus-message-protocol';
+
 import {MessageType} from 'd-bus-message-protocol';
 import {assertType, stringType, structType} from 'd-bus-type-system';
 

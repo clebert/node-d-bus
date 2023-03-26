@@ -1,14 +1,15 @@
+import type {DBus} from './d-bus.js';
 import type {MethodReturnMessage} from 'd-bus-message-protocol';
-import {MessageType} from 'd-bus-message-protocol';
 import type {CompleteType} from 'd-bus-type-system';
+
+import {ObjectElement} from './object-element.js';
+import {MessageType} from 'd-bus-message-protocol';
 import {
   assertType,
   stringType,
   structType,
   variantType,
 } from 'd-bus-type-system';
-import type {DBus} from './d-bus.js';
-import {ObjectElement} from './object-element.js';
 
 export class ProxyObject {
   constructor(
