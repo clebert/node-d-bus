@@ -24,7 +24,10 @@ const validData = toBuffer(
   `64 65 73 6b 74 6f 70 2e 44 42 75 73 00 00 00 00`,
 );
 
-const invalidData = toBuffer(`6c 01 00 01 00 00 00 00 01 00 00 00 6d 00 00 00`, `01 01 6f ff`);
+const invalidData = toBuffer(
+  `6c 01 00 01 00 00 00 00 01 00 00 00 6d 00 00 00`,
+  `01 01 6f ff`,
+);
 
 const messages = [
   {
@@ -45,14 +48,29 @@ describe(`MessageParser`, () => {
     const messageParser = new MessageParser();
 
     expect(messageParser.parseMessages(validData)).toEqual(messages);
-    expect(messageParser.parseMessages(validData.slice(0, 10))).toEqual(undefined);
-    expect(messageParser.parseMessages(validData.slice(10, 100))).toEqual(undefined);
-    expect(messageParser.parseMessages(validData.slice(100))).toEqual(messages);
-    expect(messageParser.parseMessages(validData)).toEqual(messages);
-    expect(messageParser.parseMessages(invalidData.slice(0, 10))).toEqual(undefined);
 
-    expect(() => messageParser.parseMessages(invalidData.slice(10))).toThrow(
-      new Error(`type=a; type=r=a[0]; type=v=r[1]; type=g=v[0]; byte-offset=19; expected-nul-byte`),
+    expect(messageParser.parseMessages(validData.subarray(0, 10))).toEqual(
+      undefined,
+    );
+
+    expect(messageParser.parseMessages(validData.subarray(10, 100))).toEqual(
+      undefined,
+    );
+
+    expect(messageParser.parseMessages(validData.subarray(100))).toEqual(
+      messages,
+    );
+
+    expect(messageParser.parseMessages(validData)).toEqual(messages);
+
+    expect(messageParser.parseMessages(invalidData.subarray(0, 10))).toEqual(
+      undefined,
+    );
+
+    expect(() => messageParser.parseMessages(invalidData.subarray(10))).toThrow(
+      new Error(
+        `type=a; type=r=a[0]; type=v=r[1]; type=g=v[0]; byte-offset=19; expected-nul-byte`,
+      ),
     );
 
     expect(messageParser.parseMessages(validData)).toEqual(messages);
